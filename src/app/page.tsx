@@ -1,103 +1,110 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { doctors } from "@/lib/data";
+import { Filter, LayoutGrid } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+export default function DoctorAccordion() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    <div className="max-w-md mx-auto mt-3 space-y-3">
+      {/* Search Bar UI */}
+      <div className="sticky top-2 z-10">
+        <div className="flex items-center space-x-2 mx-2">
+          <div className="relative w-[100%]">
+            <Input
+              type="text"
+              placeholder="Search"
+              className="pl-4 pr-10 bg-white"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-500 right-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+          <button className="p-2 text-gray-500 bg-white rounded-sm">
+            <LayoutGrid size={18} />
+          </button>
+          <button className="p-2 text-gray-500 bg-white rounded-sm">
+            <Filter size={18} />
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+      {/* Accordion List */}
+      <div className="overflow-y-auto h-full">
+        <Accordion type="single" collapsible defaultValue="0">
+          {doctors.map((doc, index) => (
+            <AccordionItem
+              key={doc.id}
+              value={index.toString()}
+              className="rounded-xl border px-4 py-2 shadow-md my-4 mx-2 bg-white"
+            >
+              <AccordionTrigger className="flex items-center">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={doc.image}
+                    alt={doc.name}
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                  <div>
+                    <p className="font-semibold text-sm">{doc.name}</p>
+                    <p className="text-xs text-muted-foreground">{doc.phone}</p>
+                    {doc.expertise && (
+                      <p className="text-sm font-medium text-muted-foreground">
+                        {doc.expertise}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </AccordionTrigger>
+
+              <AccordionContent className="pt-4">
+                <div className="grid grid-cols-2 text-sm gap-1 mb-3">
+                  <div>
+                    <p className="font-semibold text-sm">Expertise</p>
+                    <p className="text-muted-foreground">{doc.expertise}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-sm">Gender</p>
+                    <p className="text-muted-foreground">{doc.gender}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm">Session mode</p>
+                    <p className="text-muted-foreground">{doc.mode}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-sm">Session Fee</p>
+                    <p className="text-muted-foreground">{doc.fee}</p>
+                  </div>
+                </div>
+                <Link href={`/schedule-session/${doc.id}`}>
+                  <Button className="w-full bg-gradient-to-r from-purple-400 to-pink-400 text-white">
+                    Book Now
+                  </Button>
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
     </div>
   );
 }
